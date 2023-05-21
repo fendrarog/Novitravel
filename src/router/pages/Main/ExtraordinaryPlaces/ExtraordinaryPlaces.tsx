@@ -19,8 +19,7 @@ const ExtraordinaryPlaces: React.FC = () => {
           {extraPlaces.map((place, i) => (
             <div key={i} className={style.item}>
               <div className={style.image}>
-                {/* <img src={`/images${place.photo_link[0]}`} alt={'img'} /> */}
-                <img src={caif} alt={'img'} />
+                <img src={`/images${place.photo_link[0]}`} alt={'img'} />
               </div>
               <div className={style.item__content}>
                 <h3 className={style.title}>{place.name}</h3>
