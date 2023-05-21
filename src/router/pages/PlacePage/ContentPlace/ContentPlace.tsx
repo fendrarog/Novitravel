@@ -26,33 +26,6 @@ const comfort: any = [
   // { type: 'Доступно для инвалидных колясок', isAvailable: true },
 ];
 
-const hotels = [
-  {
-    image: 'images/testhotelsnear1.png',
-    name: 'Гранд Отель',
-    address: 'ул.Карачаевская, 62, 1-я линия, Домбай 369241',
-    country: 'Россия',
-  },
-  {
-    image: 'images/testhotelsnear1.png',
-    name: 'Отель "Белалакая"',
-    address: 'A155, 118, Домбай 369232',
-    country: 'Россия',
-  },
-  {
-    image: 'images/testhotelsnear1.png',
-    name: 'Гранд Отель',
-    address: 'ул.Карачаевская, 62, 1-я линия, Домбай 369241',
-    country: 'Россия',
-  },
-  {
-    image: 'images/testhotelsnear1.png',
-    name: 'Отель "Белалакая"',
-    address: 'A155, 118, Домбай 369232',
-    country: 'Россия',
-  },
-];
-
 interface ContentPlacePropsType {
   info: GeoJsonProperties;
 }
@@ -117,7 +90,7 @@ const ContentPlace: React.FC<ContentPlacePropsType> = ({ info }) => {
                           style={{ borderRadius: '6px', overflow: 'hidden' }}
                         >
                           <img
-                            src={service.photo_link[0] || 'images/testservicesnear.png'}
+                            src={service.photo_link[0] || '/images/testservicesnear.png'}
                             alt="pichotel"
                           />
                         </div>
