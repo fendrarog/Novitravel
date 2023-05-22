@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useRef } from 'react';
 import ReactMapGl, { Source, Layer, LayerProps, Popup } from 'react-map-gl';
 import attractionsGeo from '../../data/09Geo.json';
+import restaurantGeo from '../../data/restaurantGeo.json';
 import GeoJSON, {
   FeatureCollection,
   GeoJsonProperties,
@@ -22,8 +23,9 @@ const layerStyleCircle: LayerProps = {
     'circle-radius': {
       base: 1.75,
       stops: [
-        [12, 2],
-        [22, 180],
+        [10, 2],
+        [12, 8],
+        [22, 20],
       ],
     },
     'circle-stroke-color': '#333333',
@@ -41,16 +43,60 @@ export const Map = () => {
   const [popupInfo, setPopupInfo] = React.useState<null | GeoJsonProperties>(null);
   console.log(viewState);
 
+  const layerStyleRestaurants: LayerProps = {
+    id: 'restaurants',
+    type: 'symbol',
+    layout: {
+      // 'icon-ignore-placement': true,
+      // 'text-ignore-placement': true,
+
+      'icon-image': 'restaurant', // reference the image
+      'icon-size': {
+        base: 1.5,
+        stops: [
+          [12, 0.15],
+          [22, 0.4],
+        ],
+      },
+      'text-field': ['get', 'name'],
+      'text-anchor': 'bottom',
+      'text-offset': [0, -1.5],
+    },
+    paint: {
+      'text-color': 'purple',
+      'text-halo-color': '#fff',
+      'text-halo-blur': 5,
+      'text-halo-width': 2,
+    },
+  };
+
   const layerStyleAttractions: LayerProps = {
     id: 'attractions',
     type: 'symbol',
     layout: {
-      'icon-image': '01', // reference the image
+      // 'icon-ignore-placement': true,
+      // 'text-ignore-placement': true,
+
+      'icon-image': [
+        'match',
+        ['get', 'scale_name_en'],
+        'extra1',
+        'attraction_extra',
+        'extra2',
+        'attraction_extra',
+        'big1',
+        'attraction_big',
+        'big2',
+        'attraction_big',
+        'medium',
+        'attraction_medium',
+        'attraction_small',
+      ], // reference the image
       'icon-size': {
-        base: 1.75,
+        base: 1.5,
         stops: [
-          [12, 0.3],
-          [22, 0.2],
+          [12, 0.15],
+          [22, 0.4],
         ],
       },
       'text-field': ['get', 'name'],
@@ -65,22 +111,82 @@ export const Map = () => {
       'text-opacity': [
         'step',
         ['zoom'], //input 0
-        ['match', ['get', 'scale'], 'extra', 1, 0], // output 0
+        ['match', ['get', 'scale_name_en'], 'extra1', 1, 0], // output 0
+        4,
+        ['match', ['get', 'scale_name_en'], 'extra1', 1, 'extra2', 1, 0],
         4.5,
-        ['match', ['get', 'scale'], 'extra', 1, 'big', 0.7, 0],
+        ['match', ['get', 'scale_name_en'], 'extra1', 1, 'extra2', 1, 'big1', 1, 0], // input1, output1
+        5.5,
+        [
+          'match',
+          ['get', 'scale_name_en'],
+          'extra1',
+          1,
+          'extra2',
+          1,
+          'big1',
+          1,
+          'big2',
+          1,
+          0,
+        ],
         7,
-        ['match', ['get', 'scale'], 'extra', 1, 'big', 0.7, 'medium', 0.4, 0], // input1, output1
+        [
+          'match',
+          ['get', 'scale_name_en'],
+          'extra1',
+          1,
+          'extra2',
+          1,
+          'big1',
+          1,
+          'big2',
+          1,
+          'medium',
+          1,
+          0,
+        ],
         12,
         1, // etc etc
       ],
       'icon-opacity': [
         'step',
         ['zoom'], //input 0
-        ['match', ['get', 'scale'], 'extra', 1, 0], // output 0
+        ['match', ['get', 'scale_name_en'], 'extra1', 1, 0], // output 0
+        4,
+        ['match', ['get', 'scale_name_en'], 'extra1', 1, 'extra2', 1, 0],
         4.5,
-        ['match', ['get', 'scale'], 'extra', 1, 'big', 0.7, 0],
+        ['match', ['get', 'scale_name_en'], 'extra1', 1, 'extra2', 1, 'big1', 1, 0], // input1, output1
+        5.5,
+        [
+          'match',
+          ['get', 'scale_name_en'],
+          'extra1',
+          1,
+          'extra2',
+          1,
+          'big1',
+          1,
+          'big2',
+          1,
+          0,
+        ],
         7,
-        ['match', ['get', 'scale'], 'extra', 1, 'big', 0.7, 'medium', 0.4, 0], // input1, output1
+        [
+          'match',
+          ['get', 'scale_name_en'],
+          'extra1',
+          1,
+          'extra2',
+          1,
+          'big1',
+          1,
+          'big2',
+          1,
+          'medium',
+          1,
+          0,
+        ],
         12,
         1, // etc etc
       ],
@@ -92,7 +198,7 @@ export const Map = () => {
         style={{ width: '100%', height: '733px' }}
         {...viewState}
         onMove={(evt) => setViewState(evt.viewState)}
-        interactiveLayerIds={['attractions', 'point']}
+        interactiveLayerIds={['attractions', 'restaurants', 'point']}
         onRender={(event) => event.target.resize()}
         onClick={(evt) => {
           if (!evt.features) return;
@@ -105,12 +211,20 @@ export const Map = () => {
       >
         <MapImage />
         <Source
-          id="my-data"
+          id="09"
           type="geojson"
           data={attractionsGeo as FeatureCollection<Geometry, GeoJsonProperties>}
         >
           <Layer {...layerStyleCircle} />
           <Layer {...layerStyleAttractions} />
+        </Source>
+
+        <Source
+          id="my-data"
+          type="geojson"
+          data={restaurantGeo as FeatureCollection<Geometry, GeoJsonProperties>}
+        >
+          <Layer {...layerStyleRestaurants} />
         </Source>
         {popupInfo && (
           <Popup
@@ -145,9 +259,17 @@ export const Map = () => {
                 }}
               >
                 <div>
-                  <div style={{ borderRadius: '6px', overflow: 'hidden' }}>
+                  <div
+                    style={{
+                      borderRadius: '6px',
+                      overflow: 'hidden',
+                      width: '87px',
+                      height: '87px',
+                    }}
+                  >
                     <img
-                      src={'/images/testpopup.png'}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      src={`/images${JSON.parse(popupInfo.properties.photo_link)[0]}`}
                       alt="picplace"
                     />
                   </div>
@@ -203,10 +325,7 @@ export const Map = () => {
                     justifyContent: 'center',
                   }}
                 >
-                  <img
-                    src={'/icons/redlike.svg'}
-                    alt="like"
-                  />
+                  <img src={'/icons/redlike.svg'} alt="like" />
                 </div>
               </div>
               <div

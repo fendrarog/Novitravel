@@ -78,7 +78,7 @@ export const MapPlace: React.FC<MapPlacePropsType> = ({
         mapStyle="mapbox://styles/mapbox/streets-v9"
         mapboxAccessToken={MAPBOX_TOKEN}
       >
-        <Marker longitude={longitude} latitude={latitude} anchor="center" />
+        <Marker longitude={longitude} latitude={latitude} anchor="center" color="red" />
         <MapImage />
         <Source
           id="my-data"
