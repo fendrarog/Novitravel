@@ -67,12 +67,7 @@ const Comments: React.FC = () => {
                       <span
                         className={style.rating_value}
                         style={{
-                          backgroundColor:
-                            comment.review_rating < 4 && comment.review_rating >= 3
-                              ? 'orange'
-                              : comment.review_rating < 3
-                              ? 'red'
-                              : '#248742',
+                          border: '1px solid #248742',
                         }}
                       >
                         {comment.review_rating.toFixed(1)}

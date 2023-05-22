@@ -101,7 +101,10 @@
     color: #565656;
 }
 .rating_value{
-    color: #fff;
+    border: 1px solid '#248742';
+    display: inline-block; 
+    color: '#248742';
+    
     border-radius: 3px;
     padding: 2px 5px;
 }

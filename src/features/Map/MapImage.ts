@@ -5,7 +5,7 @@ const icons = [
   'attraction_medium',
   'attraction_big',
   'attraction_extra',
-  'restaurant',
+  'restaurantPoint',
 ];
 
 export default function MapImage() {

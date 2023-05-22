@@ -50,11 +50,11 @@ export const Map = () => {
       // 'icon-ignore-placement': true,
       // 'text-ignore-placement': true,
 
-      'icon-image': 'restaurant', // reference the image
+      'icon-image': 'restaurantPoint', // reference the image
       'icon-size': {
         base: 1.5,
         stops: [
-          [12, 0.15],
+          [12, 0.25],
           [22, 0.4],
         ],
       },
@@ -67,6 +67,20 @@ export const Map = () => {
       'text-halo-color': '#fff',
       'text-halo-blur': 5,
       'text-halo-width': 2,
+      'text-opacity': [
+        'step',
+        ['zoom'], //input 0
+        0, // output 0
+        9.5,
+        1,
+      ],
+      'icon-opacity': [
+        'step',
+        ['zoom'], //input 0
+        0, // output 0
+        9.5,
+        1,
+      ],
     },
   };
 
